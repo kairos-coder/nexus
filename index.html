@@ -6,180 +6,104 @@
 <title>THE NEXUS — Order of Olympus</title>
 <style>
 :root {
-  --bg: #0a0a0f;
-  --surface: #12121a;
-  --border: #1f1f2e;
-  --text: #c0c0d0;
-  --text-dim: #6a6a7a;
-  --gold: #c9a84c;
-  --gold-bright: #f0d878;
-  --gold-dim: #6b5520;
-  --live: #44cc88;
-  --live-glow: rgba(68,204,136,0.5);
-  --building: #c9a23b;
-  --building-glow: rgba(201,162,59,0.4);
-  --dormant: #3a3a4a;
-  --empty: #1a1a24;
-  --rubric: #8b3a3a;
-  --zeus: #f0c040;
-  --artemis: #7eb8a0;
-  --demeter: #6b9e5a;
-  --hephaestus: #e89040;
-  --poseidon: #4060a0;
-  --hermes: #c060c0;
-  --apollo: #f0a040;
-  --athena: #8090c0;
-  --aphrodite: #e06090;
+  --bg: #0a0a0f; --surface: #12121a; --border: #1f1f2e;
+  --text: #c0c0d0; --text-dim: #6a6a7a; --gold: #c9a84c;
+  --gold-bright: #f0d878; --gold-dim: #6b5520;
+  --live: #44cc88; --live-glow: rgba(68,204,136,0.5);
+  --building: #c9a23b; --building-glow: rgba(201,162,59,0.4);
+  --dormant: #3a3a4a; --empty: #1a1a24; --rubric: #8b3a3a;
   --font-display: 'Georgia', 'Times New Roman', serif;
   --font-mono: 'Courier New', monospace;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-display);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  background:var(--bg); color:var(--text); font-family:var(--font-display);
+  min-height:100vh; display:flex; justify-content:center; align-items:flex-start;
   background-image:
     radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 50%),
     radial-gradient(ellipse at 30% 100%, rgba(68,204,136,0.04) 0%, transparent 40%),
     radial-gradient(ellipse at 80% 100%, rgba(201,162,59,0.03) 0%, transparent 40%);
 }
+.nexus { max-width:1100px; width:100%; padding:30px 20px; display:flex; flex-direction:column; align-items:center; gap:24px; }
 
-.nexus {
-  max-width: 1000px;
-  width: 100%;
-  padding: 40px 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-}
+/* HEADER */
+.nexus-header { text-align:center; }
+.nexus-header .studio { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--text-dim); margin-bottom:4px; }
+.nexus-header h1 { font-size:28px; letter-spacing:6px; color:var(--gold); font-weight:normal; text-transform:uppercase; }
+.nexus-header .subtitle { font-size:11px; letter-spacing:3px; color:var(--text-dim); margin-top:6px; font-family:var(--font-mono); text-transform:uppercase; }
 
-/* ── HEADER ── */
-.nexus-header { text-align: center; }
-.nexus-header .studio { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
-.nexus-header h1 { font-size: 28px; letter-spacing: 6px; color: var(--gold); font-weight: normal; text-transform: uppercase; }
-.nexus-header .subtitle { font-size: 11px; letter-spacing: 3px; color: var(--text-dim); margin-top: 6px; font-family: var(--font-mono); text-transform: uppercase; }
+/* COUNCIL FEED */
+.council-feed { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+.council-header { padding:10px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+.council-header-title { font-family:var(--font-mono); font-size:9px; letter-spacing:2px; color:var(--gold); text-transform:uppercase; }
+.council-header .spacer { flex:1; }
+.council-status { font-family:var(--font-mono); font-size:8px; color:var(--live); letter-spacing:1px; }
+.council-body { max-height:280px; overflow-y:auto; padding:6px; display:flex; flex-direction:column; gap:2px; }
+.council-msg { display:flex; gap:8px; padding:8px 10px; border-radius:3px; background:rgba(255,255,255,0.02); border:1px solid transparent; transition:all 0.2s; animation:msgIn 0.3s ease; }
+@keyframes msgIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+.council-msg:hover { border-color:var(--border); background:rgba(255,255,255,0.03); }
+.council-msg .god-glyph { font-size:18px; width:28px; text-align:center; flex-shrink:0; }
+.council-msg .msg-body { flex:1; min-width:0; }
+.council-msg .msg-header { display:flex; align-items:center; gap:6px; margin-bottom:2px; }
+.council-msg .god-name { font-size:10px; font-weight:bold; letter-spacing:0.5px; }
+.council-msg .msg-time { font-size:7px; color:var(--text-dim); font-family:var(--font-mono); }
+.council-msg .msg-type { font-size:7px; padding:1px 5px; border-radius:5px; font-family:var(--font-mono); letter-spacing:0.5px; }
+.msg-type.token { background:rgba(201,168,76,0.1); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+.msg-type.pair { background:rgba(192,96,192,0.1); color:#c060c0; border:1px solid rgba(192,96,192,0.2); }
+.msg-type.triplet { background:rgba(64,96,160,0.1); color:#4060a0; border:1px solid rgba(64,96,160,0.2); }
+.msg-type.image { background:rgba(240,160,64,0.1); color:#f0a040; border:1px solid rgba(240,160,64,0.2); }
+.council-msg .msg-text { font-size:11px; line-height:1.4; color:var(--text); }
+.council-msg .msg-context { font-size:8px; color:var(--text-dim); margin-top:3px; font-style:italic; }
 
-/* ── COUNCIL FEED ── */
-.council-feed {
-  width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-}
-.council-header {
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.council-header-title {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--gold);
-  text-transform: uppercase;
-}
-.council-header .spacer { flex: 1; }
-.council-status {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  color: var(--live);
-  letter-spacing: 1px;
-}
-.council-body {
-  max-height: 350px;
-  overflow-y: auto;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+/* ROUNDTABLE */
+.roundtable-section { width:100%; }
+.section-label { font-family:var(--font-mono); font-size:9px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; text-align:center; }
+.roundtable { position:relative; width:100%; max-width:550px; aspect-ratio:1; margin:0 auto; }
+.hearth { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:50px; height:50px; border-radius:50%; background:radial-gradient(circle, rgba(201,168,76,0.3) 0%, rgba(201,168,76,0.05) 50%, transparent 70%); border:1px solid rgba(201,168,76,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; animation:hearthPulse 3s ease-in-out infinite; z-index:10; }
+@keyframes hearthPulse { 0%,100%{box-shadow:0 0 30px rgba(201,168,76,0.2)} 50%{box-shadow:0 0 60px rgba(201,168,76,0.4)} }
+.seat { position:absolute; width:46px; height:46px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s ease; text-decoration:none; font-family:var(--font-mono); font-size:7px; letter-spacing:1px; text-align:center; color:var(--text-dim); border:1px solid var(--dormant); background:var(--empty); }
+.seat:hover { transform:scale(1.15); z-index:20; }
+.seat .glyph { font-size:17px; margin-bottom:1px; }
+.seat .name { font-size:6px; text-transform:uppercase; letter-spacing:1px; }
+.seat.live { border-color:var(--live); background:rgba(68,204,136,0.08); color:var(--live); box-shadow:0 0 20px var(--live-glow); animation:seatGlow 2s ease-in-out infinite; }
+@keyframes seatGlow { 0%,100%{box-shadow:0 0 15px var(--live-glow)} 50%{box-shadow:0 0 30px var(--live-glow),0 0 60px rgba(68,204,136,0.2)} }
+.seat.building { border-color:var(--building); background:rgba(201,162,59,0.06); color:var(--building); box-shadow:0 0 12px var(--building-glow); animation:buildPulse 1.5s ease-in-out infinite; }
+@keyframes buildPulse { 0%,100%{box-shadow:0 0 8px var(--building-glow)} 50%{box-shadow:0 0 20px var(--building-glow)} }
+.seat.dormant { border-color:var(--dormant); background:var(--empty); color:var(--text-dim); }
+.seat.empty { border-style:dashed; border-color:var(--empty); background:transparent; color:var(--empty); cursor:default; }
+.seat.empty:hover { transform:none; }
 
-/* ── COUNCIL MESSAGE ── */
-.council-msg {
-  display: flex;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 4px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid transparent;
-  transition: all 0.2s;
-  animation: msgIn 0.3s ease;
-}
-@keyframes msgIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-.council-msg:hover { border-color: var(--border); background: rgba(255,255,255,0.03); }
-.council-msg .god-glyph { font-size: 20px; width: 32px; text-align: center; flex-shrink: 0; }
-.council-msg .msg-body { flex: 1; min-width: 0; }
-.council-msg .msg-header { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-.council-msg .god-name { font-size: 11px; font-weight: bold; letter-spacing: 0.5px; }
-.council-msg .msg-time { font-size: 8px; color: var(--text-dim); font-family: var(--font-mono); }
-.council-msg .msg-type { font-size: 8px; padding: 1px 6px; border-radius: 6px; font-family: var(--font-mono); letter-spacing: 0.5px; }
-.msg-type.token { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
-.msg-type.pair { background: rgba(192,96,192,0.1); color: var(--hermes); border: 1px solid rgba(192,96,192,0.2); }
-.msg-type.triplet { background: rgba(64,96,160,0.1); color: var(--poseidon); border: 1px solid rgba(64,96,160,0.2); }
-.msg-type.image { background: rgba(240,160,64,0.1); color: var(--apollo); border: 1px solid rgba(240,160,64,0.2); }
-.council-msg .msg-text { font-size: 12px; line-height: 1.5; color: var(--text); }
-.council-msg .msg-context { font-size: 9px; color: var(--text-dim); margin-top: 4px; font-style: italic; }
+/* CONSTELLATION */
+.constellation { width:100%; }
+.constellation-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:6px; }
+.constellation-group { margin-bottom:10px; }
+.constellation-group-title { font-family:var(--font-mono); font-size:8px; letter-spacing:2px; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; padding-left:2px; }
+.repo-card { display:flex; align-items:center; gap:8px; padding:8px 10px; background:var(--surface); border:1px solid var(--border); border-radius:3px; text-decoration:none; color:var(--text); transition:all 0.2s; }
+.repo-card:hover { border-color:var(--gold); background:rgba(201,168,76,0.04); }
+.repo-card .status-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.repo-card .status-dot.live { background:var(--live); box-shadow:0 0 6px var(--live-glow); }
+.repo-card .status-dot.building { background:var(--building); box-shadow:0 0 4px var(--building-glow); }
+.repo-card .status-dot.dormant { background:var(--dormant); }
+.repo-card .status-dot.empty { background:transparent; border:1px dashed var(--empty); }
+.repo-card .repo-info { flex:1; min-width:0; }
+.repo-card .repo-name { font-family:var(--font-mono); font-size:9px; letter-spacing:0.5px; color:var(--text); }
+.repo-card .repo-desc { font-size:8px; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.repo-card .repo-lang { font-size:7px; color:var(--text-dim); font-family:var(--font-mono); }
 
-/* ── ROUNDTABLE ── */
-.roundtable-section { width: 100%; }
-.section-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; text-align: center; }
-.roundtable { position: relative; width: 100%; max-width: 600px; aspect-ratio: 1; margin: 0 auto; }
-.hearth {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 60px; height: 60px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(201,168,76,0.3) 0%, rgba(201,168,76,0.05) 50%, transparent 70%);
-  border: 1px solid rgba(201,168,76,0.2);
-  display: flex; align-items: center; justify-content: center; font-size: 22px;
-  animation: hearthPulse 3s ease-in-out infinite; z-index: 10;
-}
-@keyframes hearthPulse { 0%, 100% { box-shadow: 0 0 30px rgba(201,168,76,0.2); } 50% { box-shadow: 0 0 60px rgba(201,168,76,0.4); } }
-.seat {
-  position: absolute; width: 52px; height: 52px; border-radius: 50%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  cursor: pointer; transition: all 0.3s ease; text-decoration: none;
-  font-family: var(--font-mono); font-size: 8px; letter-spacing: 1px;
-  text-align: center; color: var(--text-dim);
-  border: 1px solid var(--dormant); background: var(--empty);
-}
-.seat:hover { transform: scale(1.15); z-index: 20; }
-.seat .glyph { font-size: 20px; margin-bottom: 1px; }
-.seat .name { font-size: 7px; text-transform: uppercase; letter-spacing: 1px; }
-.seat.live { border-color: var(--live); background: rgba(68,204,136,0.08); color: var(--live); box-shadow: 0 0 20px var(--live-glow); animation: seatGlow 2s ease-in-out infinite; }
-@keyframes seatGlow { 0%, 100% { box-shadow: 0 0 15px var(--live-glow); } 50% { box-shadow: 0 0 30px var(--live-glow), 0 0 60px rgba(68,204,136,0.2); } }
-.seat.building { border-color: var(--building); background: rgba(201,162,59,0.06); color: var(--building); box-shadow: 0 0 12px var(--building-glow); animation: buildPulse 1.5s ease-in-out infinite; }
-@keyframes buildPulse { 0%, 100% { box-shadow: 0 0 8px var(--building-glow); } 50% { box-shadow: 0 0 20px var(--building-glow); } }
-.seat.dormant { border-color: var(--dormant); background: var(--empty); color: var(--text-dim); }
-.seat.empty { border-style: dashed; border-color: var(--empty); background: transparent; color: var(--empty); cursor: default; }
-.seat.empty:hover { transform: none; }
-.seat[data-tooltip]:hover::after {
-  content: attr(data-tooltip); position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%);
-  background: var(--surface); border: 1px solid var(--border); padding: 3px 8px;
-  font-size: 8px; white-space: nowrap; color: var(--text); z-index: 30; pointer-events: none;
-}
+/* BOTTOM BAR */
+.bottom-bar { display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap; padding-top:10px; }
+.nexus-link { font-family:var(--font-mono); font-size:10px; letter-spacing:2px; color:var(--text-dim); text-decoration:none; padding:8px 20px; border:1px solid var(--dormant); border-radius:2px; transition:all 0.2s; text-transform:uppercase; }
+.nexus-link:hover { border-color:var(--gold); color:var(--gold); }
+.repo-count { font-family:var(--font-mono); font-size:8px; color:var(--text-dim); letter-spacing:1px; }
 
-/* ── BOTTOM BAR ── */
-.bottom-bar { display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap; }
-.nexus-link { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; color: var(--text-dim); text-decoration: none; padding: 8px 20px; border: 1px solid var(--dormant); border-radius: 2px; transition: all 0.2s; text-transform: uppercase; }
-.nexus-link:hover { border-color: var(--gold); color: var(--gold); }
+/* SCROLLBAR */
+::-webkit-scrollbar { width:3px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 650px) {
-  .roundtable { max-width: 360px; }
-  .seat { width: 40px; height: 40px; }
-  .seat .glyph { font-size: 14px; }
-  .seat .name { font-size: 6px; }
-  .hearth { width: 44px; height: 44px; font-size: 16px; }
-  .council-body { max-height: 250px; }
+@media (max-width:650px) {
+  .roundtable { max-width:340px; }
+  .seat { width:38px; height:38px; }
+  .seat .glyph { font-size:13px; }
+  .constellation-grid { grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); }
 }
 </style>
 </head>
@@ -191,67 +115,106 @@ body {
   <div class="nexus-header">
     <div class="studio">Ealdforn Studios presents</div>
     <h1>The Nexus</h1>
-    <div class="subtitle">The Order of Olympus · Roundtable of the Gods</div>
+    <div class="subtitle">The Order of Olympus · All Kairos-Coder Repositories</div>
   </div>
 
   <!-- COUNCIL FEED -->
   <div class="council-feed">
     <div class="council-header">
-      <span>🏛️</span>
-      <span class="council-header-title">Council Feed</span>
-      <span class="spacer"></span>
+      <span>🏛️</span><span class="council-header-title">Council Feed</span><span class="spacer"></span>
       <span class="council-status" id="councilStatus">● Listening</span>
     </div>
     <div class="council-body" id="councilBody">
-      <div style="text-align:center;padding:30px;color:var(--text-dim);font-style:italic;font-size:12px;">
-        The council awaits the gods' voices...
-      </div>
+      <div style="text-align:center;padding:30px;color:var(--text-dim);font-style:italic;font-size:12px;">The council awaits the gods' voices...</div>
     </div>
   </div>
 
   <!-- ROUNDTABLE -->
   <div class="roundtable-section">
-    <div class="section-label">The Twelve Seats</div>
-    <div class="roundtable" id="roundtable">
-      <div class="hearth">🔥</div>
-    </div>
+    <div class="section-label">The Twelve Olympians</div>
+    <div class="roundtable" id="roundtable"><div class="hearth">🔥</div></div>
+  </div>
+
+  <!-- CONSTELLATION -->
+  <div class="constellation">
+    <div class="section-label">All Repositories · <span id="totalRepos">0</span> tracked</div>
+    <div id="constellationGrid"></div>
   </div>
 
   <!-- BOTTOM BAR -->
   <div class="bottom-bar">
     <a href="/wiki/" class="nexus-link">📜 Scriptorium</a>
-    <span style="font-family:var(--font-mono);font-size:8px;color:var(--text-dim);">Council v1.0</span>
+    <span class="repo-count" id="liveCount">0 live</span>
   </div>
 
 </div>
 
 <script>
 // ════════════════════════════════════════
-// THE NEXUS — Roundtable + Council Feed
+// THE NEXUS — Complete Repository Map
 // ════════════════════════════════════════
 
-var OLYMPIANS = [
-  { name: 'Zeus',     glyph: '⚡', path: '/zeus/',     builder: 'Claude',     status: 'live',    color: '#f0c040' },
-  { name: 'Hera',     glyph: '👑', path: '/hera/',     builder: 'Copilot',    status: 'building', color: '#c0a0d0' },
-  { name: 'Poseidon', glyph: '🌊', path: '/poseidon/', builder: 'Gemini',     status: 'live',    color: '#4060a0' },
-  { name: 'Demeter',  glyph: '🌿', path: '/demeter/',  builder: 'DeepSeek',   status: 'live',    color: '#6b9e5a' },
-  { name: 'Ares',     glyph: '⚔️', path: '/ares/',     builder: 'Copilot',    status: 'building', color: '#c04040' },
-  { name: 'Athena',   glyph: '🦉', path: '/athena/',   builder: 'Claude',     status: 'live',    color: '#8090c0' },
-  { name: 'Apollo',   glyph: '☀️', path: '/apollo/',   builder: 'ChatGPT',    status: 'live',    color: '#f0a040' },
-  { name: 'Artemis',  glyph: '🏹', path: '/artemis/',  builder: 'DeepSeek',   status: 'live',    color: '#7eb8a0' },
-  { name: 'Hephaestus', glyph: '🔨', path: '/hephaestus/', builder: 'Grok',   status: 'live',    color: '#e89040' },
-  { name: 'Aphrodite', glyph: '💋', path: '/aphrodite/', builder: 'Grok',     status: 'building', color: '#e06090' },
-  { name: 'Hermes',   glyph: '🪽', path: '/hermes/',   builder: 'Gemini',     status: 'live',    color: '#c060c0' },
-  { name: 'Persephone', glyph: '🖤', path: '/persephone/', builder: 'ChatGPT', status: 'building', color: '#a08090' }
+// ── ALL REPOSITORIES ──
+var ALL_REPOS = [
+  // OLYMPIANS (inner ring)
+  { name:'zeus',       glyph:'⚡', path:'/zeus/',       group:'olympian', desc:'Judgement module for KairosDB', lang:'HTML' },
+  { name:'hera',       glyph:'👑', path:'/hera/',       group:'olympian', desc:'Hera for KairosDB', lang:'HTML' },
+  { name:'poseidon',   glyph:'🌊', path:'/poseidon/',   group:'olympian', desc:'Poseidon HTML for KairosDB', lang:'HTML' },
+  { name:'demeter',    glyph:'🌿', path:'/demeter/',    group:'olympian', desc:'Demeter HTML page for KairosDB', lang:'HTML' },
+  { name:'ares',       glyph:'⚔️', path:'/ares/',       group:'olympian', desc:'KairosDB Ares', lang:'HTML' },
+  { name:'athena',     glyph:'🦉', path:'/athena/',     group:'olympian', desc:'KairosDB Athena', lang:'HTML' },
+  { name:'apollo',     glyph:'☀️', path:'/apollo/',     group:'olympian', desc:'KairosDB HTML', lang:'HTML' },
+  { name:'artemis',    glyph:'🏹', path:'/artemis/',    group:'olympian', desc:'Artemis HTML', lang:'JavaScript' },
+  { name:'hephaestus', glyph:'🔨', path:'/hephaestus/', group:'olympian', desc:'Helper HTML for KairosDB', lang:'HTML' },
+  { name:'aphrodite',  glyph:'💋', path:'/aphrodite/',  group:'olympian', desc:'Aphrodite HTML page for KairosDB', lang:'HTML' },
+  { name:'hermes',     glyph:'🪽', path:'/hermes/',     group:'olympian', desc:'KairosDB interaction with Hermes', lang:'JavaScript' },
+  { name:'persephone', glyph:'🖤', path:'/persephone/', group:'olympian', desc:'Persephone repo for KairosDB', lang:'HTML' },
+
+  // PRIMORDIAL + INFRASTRUCTURE (middle ring)
+  { name:'gaia',       glyph:'🌍', path:'/gaia/',       group:'primordial', desc:'First modules for GaiaDB', lang:'JavaScript' },
+  { name:'torsion',    glyph:'🌀', path:'/torsion/',    group:'primordial', desc:'HTML torsion field', lang:'JavaScript' },
+  { name:'oceanus',    glyph:'🌊', path:'/oceanus/',    group:'primordial', desc:'Titan HTML', lang:'HTML' },
+  { name:'nexus',      glyph:'◈',  path:'/nexus/',      group:'infrastructure', desc:'Nexus for all kairos-coder repos', lang:'HTML' },
+  { name:'pantheon',   glyph:'🏛️', path:'/pantheon/',   group:'infrastructure', desc:'Official KairosDB Pantheon', lang:'HTML' },
+  { name:'wiki',       glyph:'📜', path:'/wiki/',       group:'infrastructure', desc:'EaldfornWiki', lang:'HTML' },
+  { name:'mnemosyne',  glyph:'🧿', path:'/mnemosyne/',  group:'infrastructure', desc:'Human-in-the-loop terminal for KairosDB', lang:'HTML' },
+  { name:'terminal',   glyph:'▸',  path:'/terminal/',   group:'infrastructure', desc:'Command line interface for structured memory', lang:'JavaScript' },
+  { name:'kernel',     glyph:'⚙️',  path:'/kernel/',     group:'infrastructure', desc:'Kernel for KairosDB', lang:'HTML' },
+  { name:'dashboard',  glyph:'📊', path:'/dashboard/',  group:'infrastructure', desc:'Dashboard for KairosDB', lang:'HTML' },
+  { name:'kairos-kalendar', glyph:'📅', path:'/kairos-kalendar/', group:'infrastructure', desc:'Calendar for workflow organization', lang:'HTML' },
+  { name:'dev',        glyph:'🔧', path:'/dev/',        group:'infrastructure', desc:'Dev repo for KairosDB and HTML Pantheon', lang:'' },
+  { name:'cortex',     glyph:'🧠', path:'/cortex/',     group:'infrastructure', desc:'Browser-native AI', lang:'HTML' },
+
+  // STUDIOS + ARCHIVES + EXPERIMENTS (outer ring)
+  { name:'ealdforn-studios', glyph:'🏗️', path:'/ealdforn-studios/', group:'studio', desc:'Creative coding portfolio landing page', lang:'HTML' },
+  { name:'ealdenmot',  glyph:'📖', path:'/ealdenmot/',  group:'studio', desc:'Ealdforn text adventure game', lang:'JavaScript' },
+  { name:'ealdforn',   glyph:'📖', path:'/ealdforn/',   group:'studio', desc:'Ealdforn text adventure game', lang:'HTML' },
+  { name:'halupedia',  glyph:'📚', path:'/halupedia/',  group:'archive', desc:'Encyclopedia that hallucinates articles', lang:'TypeScript' },
+  { name:'Scriptorum.Vivum', glyph:'📝', path:'/Scriptorum.Vivum/', group:'archive', desc:'The Living Manuscript', lang:'HTML' },
+  { name:'EaldfornSagas', glyph:'📜', path:'/EaldfornSagas/', group:'archive', desc:'22,000 words of Old Saxon poetry', lang:'HTML' },
+  { name:'Cantica_Antiqua', glyph:'🎵', path:'/Cantica_Antiqua/', group:'archive', desc:'Full manuscript of the Cantica Antiqua', lang:'HTML' },
+  { name:'Book_of_Mategwas_HTML', glyph:'📕', path:'/Book_of_Mategwas_HTML/', group:'archive', desc:'The Book of Mategwas', lang:'HTML' },
+  { name:'Spiral_Canon', glyph:'🌀', path:'/Spiral_Canon/', group:'archive', desc:'Spiral Canon', lang:'' },
+  { name:'grimoir',    glyph:'🔮', path:'/grimoir/',    group:'archive', desc:'Ealdforn Grimoir', lang:'HTML' },
+  { name:'divination', glyph:'🔍', path:'/divination/', group:'experiment', desc:'Digital Divination: Aspects of the Divine', lang:'HTML' },
+  { name:'echo',       glyph:'📢', path:'/echo/',       group:'experiment', desc:'Adzmist ECHO', lang:'HTML' },
+  { name:'ai_tower',   glyph:'🏗️', path:'/ai_tower/',   group:'experiment', desc:'SimTower type game AI Tower', lang:'JavaScript' },
+  { name:'vision_board', glyph:'🎯', path:'/vision_board/', group:'experiment', desc:'Vision board', lang:'' },
+  { name:'Orchestral', glyph:'🎻', path:'/Orchestral/', group:'experiment', desc:'Novel framework for human-AI collaboration', lang:'HTML' },
+  { name:'SpectralDB', glyph:'💾', path:'/SpectralDB/', group:'experiment', desc:'Autonomous memory core for AI collaboration', lang:'Python' },
+  { name:'copilot',    glyph:'🤖', path:'/copilot/',    group:'experiment', desc:'Microsoft Copilot HTML page for KairosDB', lang:'HTML' },
+  { name:'terminal_dev', glyph:'▸', path:'/terminal_dev/', group:'experiment', desc:'Dev repo for Kairos Terminal', lang:'JavaScript' },
+  { name:'KAK_v1-gemini-edition', glyph:'💎', path:'/KAK_v1-gemini-edition/', group:'experiment', desc:'Python script generator', lang:'Python' }
 ];
 
+var OLYMPIANS = ALL_REPOS.filter(function(r) { return r.group === 'olympian'; });
+
 // ════════════════════════════════════
-// COUNCIL FEED — Reads KairosDB
+// COUNCIL FEED
 // ════════════════════════════════════
 var KAIROS_URL = 'https://kzcucjcyxybypncbdbws.supabase.co';
 var KAIROS_KEY = 'sb_publishable_saeUHGocDah-T2_709M6Fg_g26JtLXw';
 var supabase = null;
-var lastFetchTime = null;
 var knownTokenIds = {};
 
 function initSupabase() {
@@ -265,257 +228,159 @@ function initSupabase() {
 
 async function fetchCouncilActivity() {
   if (!supabase) return;
-
   try {
-    // Fetch recent tokens from all gods
-    var tokenQuery = supabase.from('tokens')
-      .select('id, body, source, domain, created_at')
-      .order('created_at', { ascending: false })
-      .limit(30);
-
-    // Fetch recent pairs
-    var pairQuery = supabase.from('pairs')
-      .select('id, token_a_body, token_b_body, domain_a, domain_b, affinity_score, created_at')
-      .order('created_at', { ascending: false })
-      .limit(10);
-
-    // Fetch recent triplets
-    var tripletQuery = supabase.from('svo_triplets')
-      .select('id, subject, verb, object, source, created_at')
-      .order('created_at', { ascending: false })
-      .limit(10);
-
-    // Fetch recent images
-    var imageQuery = supabase.from('images')
-      .select('id, name, god, prompt_text, image_url, created_at')
-      .order('created_at', { ascending: false })
-      .limit(5);
-
-    var results = await Promise.all([tokenQuery, pairQuery, tripletQuery, imageQuery]);
-    var tokens = results[0].data || [];
-    var pairs = results[1].data || [];
-    var triplets = results[2].data || [];
-    var images = results[3].data || [];
-
-    // Filter to new tokens only
-    var newTokens = tokens.filter(function(t) {
-      if (knownTokenIds[t.id]) return false;
-      knownTokenIds[t.id] = true;
-      return true;
-    });
-
-    // Build council messages
+    var results = await Promise.all([
+      supabase.from('tokens').select('id, body, source, domain, created_at').order('created_at',{ascending:false}).limit(25),
+      supabase.from('pairs').select('id, token_a_body, token_b_body, domain_a, affinity_score, created_at').order('created_at',{ascending:false}).limit(8),
+      supabase.from('svo_triplets').select('id, subject, verb, object, source, created_at').order('created_at',{ascending:false}).limit(8),
+      supabase.from('images').select('id, name, god, image_url, created_at').order('created_at',{ascending:false}).limit(5)
+    ]);
+    var tokens = results[0].data || [], pairs = results[1].data || [], triplets = results[2].data || [], images = results[3].data || [];
     var messages = [];
 
-    // Tokens
-    newTokens.forEach(function(t) {
-      messages.push({
-        type: 'token',
-        source: t.source || 'unknown',
-        body: t.body || '',
-        domain: t.domain || '',
-        time: t.created_at,
-        id: t.id
-      });
+    tokens.filter(function(t){ if(knownTokenIds[t.id]) return false; knownTokenIds[t.id]=true; return true; }).forEach(function(t){
+      messages.push({type:'token', source:t.source||'unknown', body:t.body||'', time:t.created_at, id:t.id});
     });
+    pairs.forEach(function(p){ if(!knownTokenIds['pair_'+p.id]){ knownTokenIds['pair_'+p.id]=true; messages.push({type:'pair', source:p.domain_a||'unknown', body:(p.token_a_body||'')+' ↔ '+(p.token_b_body||''), affinity:p.affinity_score, time:p.created_at, id:'pair_'+p.id}); } });
+    triplets.forEach(function(t){ if(!knownTokenIds['trip_'+t.id]){ knownTokenIds['trip_'+t.id]=true; messages.push({type:'triplet', source:t.source||'unknown', body:(t.subject||'')+' '+(t.verb||'')+' '+(t.object||''), time:t.created_at, id:'trip_'+t.id}); } });
+    images.forEach(function(img){ if(!knownTokenIds['img_'+img.id]){ knownTokenIds['img_'+img.id]=true; messages.push({type:'image', source:img.god||'unknown', body:img.name||'Generated image', imageUrl:img.image_url, time:img.created_at, id:'img_'+img.id}); } });
 
-    // Pairs
-    pairs.forEach(function(p) {
-      if (!knownTokenIds['pair_' + p.id]) {
-        knownTokenIds['pair_' + p.id] = true;
-        messages.push({
-          type: 'pair',
-          source: p.domain_a || 'unknown',
-          body: (p.token_a_body || '') + ' ↔ ' + (p.token_b_body || ''),
-          affinity: p.affinity_score,
-          time: p.created_at,
-          id: 'pair_' + p.id
-        });
-      }
-    });
-
-    // Triplets
-    triplets.forEach(function(t) {
-      if (!knownTokenIds['trip_' + t.id]) {
-        knownTokenIds['trip_' + t.id] = true;
-        messages.push({
-          type: 'triplet',
-          source: t.source || 'unknown',
-          body: (t.subject || '') + ' ' + (t.verb || '') + ' ' + (t.object || ''),
-          time: t.created_at,
-          id: 'trip_' + t.id
-        });
-      }
-    });
-
-    // Images
-    images.forEach(function(img) {
-      if (!knownTokenIds['img_' + img.id]) {
-        knownTokenIds['img_' + img.id] = true;
-        messages.push({
-          type: 'image',
-          source: img.god || 'unknown',
-          body: img.name || img.prompt_text || 'Generated image',
-          imageUrl: img.image_url,
-          time: img.created_at,
-          id: 'img_' + img.id
-        });
-      }
-    });
-
-    // Sort by time, newest first
-    messages.sort(function(a, b) {
-      return new Date(b.time) - new Date(a.time);
-    });
-
-    if (messages.length > 0) {
-      renderCouncilMessages(messages);
-    }
-
-    // Update status
+    messages.sort(function(a,b){ return new Date(b.time) - new Date(a.time); });
+    if (messages.length > 0) renderCouncilMessages(messages);
     document.getElementById('councilStatus').textContent = '● Live · ' + tokens.length + ' tokens';
 
-    // Keep knownTokenIds from growing too large
     var idKeys = Object.keys(knownTokenIds);
-    if (idKeys.length > 500) {
-      var oldest = idKeys.slice(0, idKeys.length - 300);
-      oldest.forEach(function(k) { delete knownTokenIds[k]; });
-    }
-
-  } catch (err) {
-    console.warn('Council feed fetch failed:', err.message);
-    document.getElementById('councilStatus').textContent = '○ Silent';
-  }
+    if (idKeys.length > 500) { var oldest = idKeys.slice(0, idKeys.length-300); oldest.forEach(function(k){ delete knownTokenIds[k]; }); }
+  } catch(err) { console.warn('Council feed fetch failed:', err.message); document.getElementById('councilStatus').textContent = '○ Silent'; }
 }
+
+var GOD_COLORS = { zeus:'#f0c040', artemis:'#7eb8a0', demeter:'#6b9e5a', hephaestus:'#e89040', poseidon:'#4060a0', hermes:'#c060c0', apollo:'#f0a040', athena:'#8090c0', aphrodite:'#e06090', hera:'#c0a0d0', persephone:'#a08090', ares:'#c04040' };
+var GOD_GLYPHS = { zeus:'⚡', artemis:'🏹', demeter:'🌿', hephaestus:'🔨', poseidon:'🌊', hermes:'🪽', apollo:'☀️', athena:'🦉', aphrodite:'💋', hera:'👑', persephone:'🖤', ares:'⚔️' };
 
 function renderCouncilMessages(messages) {
   var body = document.getElementById('councilBody');
-  
-  // Remove placeholder if present
-  var placeholder = body.querySelector('div[style]');
-  if (placeholder) placeholder.remove();
-
-  var godColors = {
-    'zeus': '#f0c040', 'artemis': '#7eb8a0', 'demeter': '#6b9e5a',
-    'hephaestus': '#e89040', 'poseidon': '#4060a0', 'hermes': '#c060c0',
-    'apollo': '#f0a040', 'athena': '#8090c0', 'aphrodite': '#e06090',
-    'hera': '#c0a0d0', 'persephone': '#a08090', 'ares': '#c04040'
-  };
-
-  var godGlyphs = {
-    'zeus': '⚡', 'artemis': '🏹', 'demeter': '🌿', 'hephaestus': '🔨',
-    'poseidon': '🌊', 'hermes': '🪽', 'apollo': '☀️', 'athena': '🦉',
-    'aphrodite': '💋', 'hera': '👑', 'persephone': '🖤', 'ares': '⚔️'
-  };
-
-  messages.slice(0, 20).forEach(function(msg) {
-    var sourceName = (msg.source || 'unknown').toLowerCase();
-    var color = godColors[sourceName] || '#6a6a7a';
-    var glyph = godGlyphs[sourceName] || '◈';
-    var timeStr = msg.time ? new Date(msg.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '';
-
-    var msgEl = document.createElement('div');
-    msgEl.className = 'council-msg';
-    msgEl.innerHTML = 
-      '<div class="god-glyph" style="color:' + color + '">' + glyph + '</div>' +
-      '<div class="msg-body">' +
-        '<div class="msg-header">' +
-          '<span class="god-name" style="color:' + color + '">' + (msg.source || 'unknown') + '</span>' +
-          '<span class="msg-type ' + msg.type + '">' + msg.type.toUpperCase() + '</span>' +
-          '<span class="msg-time">' + timeStr + '</span>' +
-        '</div>' +
-        '<div class="msg-text">' + escapeHTML(msg.body.substring(0, 200)) + '</div>' +
-        (msg.affinity ? '<div class="msg-context">Affinity: ' + (msg.affinity * 100).toFixed(0) + '%</div>' : '') +
-        (msg.imageUrl ? '<div class="msg-context">🖼️ Image generated</div>' : '') +
-      '</div>';
-
-    body.insertBefore(msgEl, body.firstChild);
+  var placeholder = body.querySelector('div[style]'); if (placeholder) placeholder.remove();
+  messages.slice(0,15).forEach(function(msg){
+    var sn = (msg.source||'unknown').toLowerCase();
+    var color = GOD_COLORS[sn] || '#6a6a7a';
+    var glyph = GOD_GLYPHS[sn] || '◈';
+    var timeStr = msg.time ? new Date(msg.time).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : '';
+    var el = document.createElement('div'); el.className = 'council-msg';
+    el.innerHTML = '<div class="god-glyph" style="color:'+color+'">'+glyph+'</div><div class="msg-body"><div class="msg-header"><span class="god-name" style="color:'+color+'">'+(msg.source||'unknown')+'</span><span class="msg-type '+msg.type+'">'+msg.type.toUpperCase()+'</span><span class="msg-time">'+timeStr+'</span></div><div class="msg-text">'+escapeHTML(String(msg.body).substring(0,180))+'</div>'+(msg.affinity?'<div class="msg-context">Affinity: '+(msg.affinity*100).toFixed(0)+'%</div>':'')+(msg.imageUrl?'<div class="msg-context">🖼️ Image generated</div>':'')+'</div>';
+    body.insertBefore(el, body.firstChild);
   });
-
-  // Keep only last 50 messages in DOM
-  var allMessages = body.querySelectorAll('.council-msg');
-  for (var i = 50; i < allMessages.length; i++) {
-    allMessages[i].remove();
-  }
+  var all = body.querySelectorAll('.council-msg');
+  for (var i = 40; i < all.length; i++) all[i].remove();
 }
-
-function escapeHTML(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
+function escapeHTML(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ════════════════════════════════════
-// ROUNDTABLE RENDERING
+// ROUNDTABLE
 // ════════════════════════════════════
 function renderRoundtable() {
   var table = document.getElementById('roundtable');
   var count = OLYMPIANS.length;
-  var centerX = table.offsetWidth / 2;
-  var centerY = table.offsetHeight / 2;
-  var radius = Math.min(centerX, centerY) * 0.72;
-  
-  table.querySelectorAll('.seat').forEach(function(s) { s.remove(); });
-
+  var cx = table.offsetWidth / 2, cy = table.offsetHeight / 2, r = Math.min(cx, cy) * 0.72;
+  table.querySelectorAll('.seat').forEach(function(s){ s.remove(); });
   for (var i = 0; i < count; i++) {
-    var angle = (i / count) * Math.PI * 2 - Math.PI / 2;
-    var x = centerX + Math.cos(angle) * radius - 26;
-    var y = centerY + Math.sin(angle) * radius - 26;
-
+    var angle = (i/count)*Math.PI*2 - Math.PI/2;
     var god = OLYMPIANS[i];
     var seat = document.createElement('a');
-    seat.className = 'seat ' + god.status;
-    seat.style.left = x + 'px';
-    seat.style.top = y + 'px';
-    
-    if (god.status !== 'empty') {
-      seat.href = god.path;
-      seat.setAttribute('data-tooltip', god.name + ' · ' + god.builder + ' · ' + god.status.toUpperCase());
-    }
-
-    seat.innerHTML = '<span class="glyph">' + god.glyph + '</span><span class="name">' + god.name + '</span>';
+    seat.className = 'seat ' + (god._status || 'building');
+    seat.style.left = (cx + Math.cos(angle)*r - 23) + 'px';
+    seat.style.top = (cy + Math.sin(angle)*r - 23) + 'px';
+    if (god._status !== 'empty') { seat.href = god.path; }
+    seat.innerHTML = '<span class="glyph">'+god.glyph+'</span><span class="name">'+god.name+'</span>';
     table.appendChild(seat);
   }
 }
 
 // ════════════════════════════════════
-// LIVE STATUS CHECK
+// CONSTELLATION
 // ════════════════════════════════════
-async function checkLiveStatus() {
-  for (var i = 0; i < OLYMPIANS.length; i++) {
-    var god = OLYMPIANS[i];
-    try {
-      var response = await fetch(god.path + 'index.html', { method: 'HEAD' });
-      if (response.ok && god.status !== 'live') {
-        god.status = 'live';
-        console.log('🟢 ' + god.name + ' is LIVE');
-      } else if (!response.ok && god.status === 'live') {
-        god.status = 'dormant';
-        console.log('🔴 ' + god.name + ' went dormant');
-      }
-    } catch (e) {
-      if (god.status === 'live') god.status = 'dormant';
+function renderConstellation() {
+  var grid = document.getElementById('constellationGrid');
+  var groups = { olympian:[], primordial:[], infrastructure:[], studio:[], archive:[], experiment:[] };
+  ALL_REPOS.forEach(function(r){ if (groups[r.group]) groups[r.group].push(r); });
+
+  var groupLabels = { olympian:'Olympians', primordial:'Primordial', infrastructure:'Infrastructure', studio:'Studios', archive:'Archives', experiment:'Experiments' };
+  var html = '';
+  Object.keys(groups).forEach(function(g){
+    if (groups[g].length === 0) return;
+    html += '<div class="constellation-group"><div class="constellation-group-title">'+groupLabels[g]+' · '+groups[g].length+' repos</div><div class="constellation-grid">';
+    groups[g].forEach(function(repo){
+      var status = repo._status || 'building';
+      var dotClass = status === 'live' ? 'live' : status === 'dormant' ? 'dormant' : status === 'empty' ? 'empty' : 'building';
+      html += '<a href="'+repo.path+'" class="repo-card" target="_blank">'+
+        '<div class="status-dot '+dotClass+'"></div>'+
+        '<div class="repo-info"><div class="repo-name">'+repo.glyph+' '+repo.name+'</div><div class="repo-desc">'+repo.desc+'</div></div>'+
+        (repo.lang ? '<div class="repo-lang">'+repo.lang+'</div>' : '')+
+      '</a>';
+    });
+    html += '</div></div>';
+  });
+  grid.innerHTML = html;
+}
+
+// ════════════════════════════════════
+// LIVE STATUS CHECK (pings all repos)
+// ════════════════════════════════════
+async function checkAllStatus() {
+  var liveCount = 0;
+  var promises = ALL_REPOS.map(function(repo) {
+    return fetch(repo.path + 'index.html', { method: 'HEAD' }).then(function(r) {
+      if (r.ok) { repo._status = 'live'; liveCount++; }
+      else { repo._status = 'building'; }
+    }).catch(function() {
+      if (repo._status !== 'live') repo._status = 'building';
+    });
+  });
+  await Promise.allSettled(promises);
+  
+  // Also check repos that might have README.md instead of index.html
+  var readmeRepos = ['SpectralDB', 'KAK_v1-gemini-edition', 'Spiral_Canon'];
+  for (var i = 0; i < readmeRepos.length; i++) {
+    var found = ALL_REPOS.find(function(r){ return r.name === readmeRepos[i]; });
+    if (found && found._status !== 'live') {
+      try {
+        var resp = await fetch(found.path + 'README.md', { method: 'HEAD' });
+        if (resp.ok) { found._status = 'live'; liveCount++; }
+      } catch(e) {}
     }
   }
+
+  document.getElementById('liveCount').textContent = liveCount + ' live';
+  document.getElementById('totalRepos').textContent = ALL_REPOS.length;
   renderRoundtable();
+  renderConstellation();
 }
 
 // ════════════════════════════════════
 // INIT
 // ════════════════════════════════════
 function init() {
+  // Set initial status
+  ALL_REPOS.forEach(function(r){ r._status = 'building'; });
+  // Known live ones get a head start
+  ['artemis','demeter','hephaestus','zeus','poseidon','hermes','apollo','athena','nexus','wiki'].forEach(function(n){
+    var found = ALL_REPOS.find(function(r){ return r.name === n; });
+    if (found) found._status = 'live';
+  });
+
   renderRoundtable();
-  
+  renderConstellation();
+  document.getElementById('totalRepos').textContent = ALL_REPOS.length;
+
   if (initSupabase()) {
     fetchCouncilActivity();
-    // Poll every 15 seconds for new council activity
     setInterval(fetchCouncilActivity, 15000);
-    // Check live status every 60 seconds
-    setInterval(checkLiveStatus, 60000);
-    // Initial live check
-    checkLiveStatus();
   }
+
+  checkAllStatus();
+  setInterval(checkAllStatus, 120000); // Recheck every 2 minutes
+  window.addEventListener('resize', renderRoundtable);
 }
 
-window.addEventListener('resize', renderRoundtable);
 init();
 </script>
 </body>
