@@ -11,7 +11,7 @@ var OlympianBridge = (function() {
   var KAIROS_URL = 'https://kzcucjcyxybypncbdbws.supabase.co';
   var KAIROS_KEY = 'sb_publishable_saeUHGocDah-T2_709M6Fg_g26JtLXw';
   var GAIA_URL = 'https://nbdvavzqvxrlxhsbrluz.supabase.co';
-  var GAIA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5iZHZhdnpxdnhxbHhoc2JybHV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUxMjcyNDQsImV4cCI6MjA2MDcwMzI0NH0.8aw3sD2nXJFmSXJB_GrRhgjCpybKzycYNpTk0iLyYr4';
+  var GAIA_KEY = 'sb_publishable_6x1xlieXjs3dWqEETQcxnQ_4L1UO2uR';
 
   var godName = '', godGlyph = '';
   var supabase = null, gaiaClient = null, isReady = false;
