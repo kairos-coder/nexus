@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE NEXUS — Order of Olympus</title>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --border: #1f1f2e;
+  --text: #c0c0d0;
+  --text-dim: #6a6a7a;
+  --gold: #c9a84c;
+  --gold-bright: #f0d878;
+  --gold-dim: #6b5520;
+  --live: #44cc88;
+  --live-glow: rgba(68,204,136,0.5);
+  --building: #c9a23b;
+  --building-glow: rgba(201,162,59,0.4);
+  --dormant: #3a3a4a;
+  --empty: #1a1a24;
+  --rubric: #8b3a3a;
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-mono: 'Courier New', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 100%, rgba(68,204,136,0.04) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 100%, rgba(201,162,59,0.03) 0%, transparent 40%);
+}
+
+.nexus {
+  max-width: 900px;
+  width: 100%;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+/* ── HEADER ── */
+.nexus-header {
+  text-align: center;
+}
+
+.nexus-header .studio {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.nexus-header h1 {
+  font-size: 28px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.nexus-header .subtitle {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+
+/* ── ROUNDTABLE ── */
+.roundtable {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+/* Central hearth */
+.hearth {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.3) 0%, rgba(201,168,76,0.05) 50%, transparent 70%);
+  border: 1px solid rgba(201,168,76,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  animation: hearthPulse 3s ease-in-out infinite;
+  z-index: 10;
+}
+
+@keyframes hearthPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(201,168,76,0.2); }
+  50% { box-shadow: 0 0 60px rgba(201,168,76,0.4); }
+}
+
+/* Seats positioned in a ring */
+.seat {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-align: center;
+  color: var(--text-dim);
+  border: 1px solid var(--dormant);
+  background: var(--empty);
+}
+
+.seat:hover {
+  transform: scale(1.15);
+  z-index: 20;
+}
+
+.seat .glyph {
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+.seat .name {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Seat states */
+.seat.live {
+  border-color: var(--live);
+  background: rgba(68,204,136,0.08);
+  color: var(--live);
+  box-shadow: 0 0 20px var(--live-glow);
+  animation: seatGlow 2s ease-in-out infinite;
+}
+
+@keyframes seatGlow {
+  0%, 100% { box-shadow: 0 0 15px var(--live-glow); }
+  50% { box-shadow: 0 0 30px var(--live-glow), 0 0 60px rgba(68,204,136,0.2); }
+}
+
+.seat.building {
+  border-color: var(--building);
+  background: rgba(201,162,59,0.06);
+  color: var(--building);
+  box-shadow: 0 0 12px var(--building-glow);
+  animation: buildPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes buildPulse {
+  0%, 100% { box-shadow: 0 0 8px var(--building-glow); }
+  50% { box-shadow: 0 0 20px var(--building-glow); }
+}
+
+.seat.dormant {
+  border-color: var(--dormant);
+  background: var(--empty);
+  color: var(--text-dim);
+}
+
+.seat.empty {
+  border-style: dashed;
+  border-color: var(--empty);
+  background: transparent;
+  color: var(--empty);
+  cursor: default;
+}
+
+.seat.empty:hover {
+  transform: none;
+}
+
+/* ── STATUS LEGEND ── */
+.legend {
+  display: flex;
+  gap: 24px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.live { background: var(--live); box-shadow: 0 0 6px var(--live-glow); }
+.legend-dot.building { background: var(--building); box-shadow: 0 0 4px var(--building-glow); }
+.legend-dot.dormant { background: var(--dormant); }
+.legend-dot.empty { background: transparent; border: 1px dashed var(--empty); }
+
+/* ── ARCHIVE LINK ── */
+.archive-link {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 8px 20px;
+  border: 1px solid var(--dormant);
+  border-radius: 2px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.archive-link:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ── COMPETITION BANNER ── */
+.competition-banner {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--rubric);
+  padding: 8px 16px;
+  border: 1px solid rgba(139,58,58,0.3);
+  border-radius: 2px;
+  text-align: center;
+}
+
+/* ── THIRTEENTH SEAT ── */
+.thirteenth {
+  margin-top: -10px;
+}
+
+.thirteenth .seat {
+  position: relative;
+  margin: 0 auto;
+  border-color: rgba(139,58,58,0.4);
+  background: rgba(139,58,58,0.05);
+  color: var(--rubric);
+  font-size: 10px;
+  width: 70px;
+  height: 70px;
+}
+
+.thirteenth .label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--rubric);
+  text-align: center;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+/* ── TOOLTIP ON HOVER ── */
+.seat[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  font-size: 9px;
+  white-space: nowrap;
+  color: var(--text);
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 650px) {
+  .roundtable {
+    max-width: 360px;
+  }
+  .seat {
+    width: 44px;
+    height: 44px;
+  }
+  .seat .glyph { font-size: 16px; }
+  .seat .name { font-size: 6px; }
+  .hearth {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  .thirteenth .seat {
+    width: 54px;
+    height: 54px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="nexus">
+
+  <!-- HEADER -->
+  <div class="nexus-header">
+    <div class="studio">Ealdforn Studios presents</div>
+    <h1>The Nexus</h1>
+    <div class="subtitle">The Order of Olympus · Roundtable of the Gods</div>
+  </div>
+
+  <!-- COMPETITION BANNER -->
+  <div class="competition-banner">
+    ⚡ Divine Competition in Progress · May 26–31, 2026 · Six AIs · Twelve Gods
+  </div>
+
+  <!-- ROUNDTABLE -->
+  <div class="roundtable" id="roundtable">
+    <div class="hearth">🔥</div>
+    <!-- Seats populated by JavaScript -->
+  </div>
+
+  <!-- THIRTEENTH SEAT -->
+  <div class="thirteenth">
+    <div class="seat empty" style="margin: 0 auto;">
+      <span class="glyph">👤</span>
+      <span class="name">???</span>
+    </div>
+    <div class="label">The Empty Throne</div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot live"></div> LIVE</div>
+    <div class="legend-item"><div class="legend-dot building"></div> BUILDING</div>
+    <div class="legend-item"><div class="legend-dot dormant"></div> DORMANT</div>
+    <div class="legend-item"><div class="legend-dot empty"></div> UNCLAIMED</div>
+  </div>
+
+  <!-- ARCHIVE -->
+  <a href="wiki/" class="archive-link">📜 Enter the Scriptorium</a>
+
+</div>
+
+<script>
+// ════════════════════════════════════════
+// THE NEXUS — Roundtable Engine
+// Dynamically detects live Olympians
+// ════════════════════════════════════════
+
+// ── OLYMPIAN REGISTRY ──
+var OLYMPIANS = [
+  { name: 'Zeus',     glyph: '⚡', path: 'zeus',     builder: 'Claude',     status: 'building' },
+  { name: 'Hera',     glyph: '👑', path: 'hera',     builder: 'Copilot',    status: 'building' },
+  { name: 'Poseidon', glyph: '🌊', path: 'poseidon', builder: 'Gemini',     status: 'building' },
+  { name: 'Demeter',  glyph: '🌿', path: 'demeter',  builder: 'DeepSeek',   status: 'building' },
+  { name: 'Ares',     glyph: '⚔️', path: 'ares',     builder: 'Copilot',    status: 'building' },
+  { name: 'Athena',   glyph: '🦉', path: 'athena',   builder: 'Claude',     status: 'live' },
+  { name: 'Apollo',   glyph: '☀️', path: 'apollo',   builder: 'ChatGPT',    status: 'live' },
+  { name: 'Artemis',  glyph: '🏹', path: 'artemis',  builder: 'DeepSeek',   status: 'live' },
+  { name: 'Hephaestus', glyph: '🔨', path: 'hephaestus', builder: 'Grok',   status: 'building' },
+  { name: 'Aphrodite', glyph: '💋', path: 'aphrodite', builder: 'Grok',     status: 'building' },
+  { name: 'Hermes',   glyph: '🪽', path: 'hermes',   builder: 'Gemini',     status: 'building' },
+  { name: 'Persephone', glyph: '🖤', path: 'persephone', builder: 'ChatGPT', status: 'building' }
+];
+
+// ── RENDER ROUNDTABLE ──
+function renderRoundtable(olympians) {
+  var table = document.getElementById('roundtable');
+  var count = olympians.length;
+  var centerX = table.offsetWidth / 2;
+  var centerY = table.offsetHeight / 2;
+  var radius = Math.min(centerX, centerY) * 0.75;
+  
+  // Clear existing seats (keep hearth)
+  var existingSeats = table.querySelectorAll('.seat');
+  for (var i = 0; i < existingSeats.length; i++) {
+    existingSeats[i].remove();
+  }
+
+  for (var i = 0; i < count; i++) {
+    var angle = (i / count) * Math.PI * 2 - Math.PI / 2; // Start from top
+    var x = centerX + Math.cos(angle) * radius - 30; // Half seat width
+    var y = centerY + Math.sin(angle) * radius - 30;
+
+    var seat = document.createElement('a');
+    seat.className = 'seat ' + olympians[i].status;
+    seat.style.left = x + 'px';
+    seat.style.top = y + 'px';
+    
+    if (olympians[i].status !== 'empty') {
+      seat.href = olympians[i].path + '/';
+      seat.setAttribute('data-tooltip', 
+        olympians[i].name + ' · ' + olympians[i].builder + ' · ' + 
+        olympians[i].status.toUpperCase()
+      );
+    }
+
+    seat.innerHTML = 
+      '<span class="glyph">' + olympians[i].glyph + '</span>' +
+      '<span class="name">' + olympians[i].name + '</span>';
+
+    table.appendChild(seat);
+  }
+}
+
+// ── PING LIVE GODS ──
+async function checkLiveStatus() {
+  var updates = [];
+  
+  for (var i = 0; i < OLYMPIANS.length; i++) {
+    var god = OLYMPIANS[i];
+    if (god.status === 'building') {
+      try {
+        var response = await fetch(god.path + '/index.html', { method: 'HEAD' });
+        if (response.ok) {
+          god.status = 'live';
+          updates.push(god.name);
+        }
+      } catch (e) {
+        // Not live yet — stays building
+      }
+    }
+  }
+
+  if (updates.length > 0) {
+    console.log('🟢 New live gods detected:', updates.join(', '));
+  }
+
+  // Check dormant gods (LIVE but maybe down)
+  for (var j = 0; j < OLYMPIANS.length; j++) {
+    var liveGod = OLYMPIANS[j];
+    if (liveGod.status === 'live') {
+      try {
+        var resp = await fetch(liveGod.path + '/index.html', { method: 'HEAD' });
+        if (!resp.ok) {
+          liveGod.status = 'dormant';
+          console.log('🔴 God went dormant:', liveGod.name);
+        }
+      } catch (e) {
+        liveGod.status = 'dormant';
+        console.log('🔴 God went dormant:', liveGod.name);
+      }
+    }
+  }
+
+  renderRoundtable(OLYMPIANS);
+}
+
+// ── INIT ──
+function init() {
+  renderRoundtable(OLYMPIANS);
+  checkLiveStatus();
+  
+  // Recheck every 60 seconds during competition
+  setInterval(checkLiveStatus, 60000);
+}
+
+// Handle resize
+window.addEventListener('resize', function() {
+  renderRoundtable(OLYMPIANS);
+});
+
+init();
+</script>
+</body>
+</html>
