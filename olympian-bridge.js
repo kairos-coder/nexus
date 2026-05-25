@@ -211,7 +211,7 @@ var OlympianBridge = (function() {
     try {
       var body = subject+' '+verb+' '+object;
       var result = await supabase.from('svo_triplets').insert({
-        subject:subject, verb:verb, object:object, body:body,
+        subject:subject, verb:verb, object:object,
         source:godName.toLowerCase(), source_origin:sourceOrigin||'bridge',
         fertility_score:fertilityScore||50, coherence_score:50,
         mythogenic_score:mythogenicScore||50, cultivation_score:50,
