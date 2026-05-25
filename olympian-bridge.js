@@ -1,10 +1,3 @@
-// ══════════════════════════════════════════════
-// OLYMPIAN BRIDGE v1.1
-// Shared module for all Olympian gods
-// Connects to KairosDB + GaiaDB for workflow
-// Added: queryGaiaDB(), queryKairosDB()
-// ══════════════════════════════════════════════
-
 var OlympianBridge = (function() {
   'use strict';
 
@@ -39,13 +32,13 @@ var OlympianBridge = (function() {
       gaiaClient = window.supabase.createClient(GAIA_URL, GAIA_KEY);
     }
     isReady = !!supabase;
-    console.log('🔗 ' + glyph + ' ' + name + ' connected to KairosDB via Olympian Bridge');
+    console.log('🔗 ' + glyph + ' ' + name + ' connected via Olympian Bridge v1.2');
     refreshTelos(); refreshTasks();
     return isReady;
   }
 
   // ══════════════════════════════════════
-  // DATABASE QUERY METHODS (NEW in v1.1)
+  // DATABASE QUERY METHODS (v1.2)
   // ══════════════════════════════════════
 
   function getGaiaClient() { return gaiaClient; }
@@ -59,7 +52,9 @@ var OlympianBridge = (function() {
       if (query.ilike) { for (var k2 in query.ilike) { q = q.ilike(k2, query.ilike[k2]); } }
       if (query.order) { q = q.order(query.order, { ascending: query.ascending !== false }); }
       if (query.limit) { q = q.limit(query.limit); }
-      return await q;
+      var result = await q;
+      if (result.error) console.warn('[Bridge] GaiaDB query error:', result.error.message);
+      return result;
     } catch(err) {
       console.warn('[Bridge] GaiaDB query failed:', err.message);
       return { data: null, error: err.message };
@@ -74,7 +69,9 @@ var OlympianBridge = (function() {
       if (query.ilike) { for (var k2 in query.ilike) { q = q.ilike(k2, query.ilike[k2]); } }
       if (query.order) { q = q.order(query.order, { ascending: query.ascending !== false }); }
       if (query.limit) { q = q.limit(query.limit); }
-      return await q;
+      var result = await q;
+      if (result.error) console.warn('[Bridge] KairosDB query error:', result.error.message);
+      return result;
     } catch(err) {
       console.warn('[Bridge] KairosDB query failed:', err.message);
       return { data: null, error: err.message };
@@ -136,17 +133,37 @@ var OlympianBridge = (function() {
   }
 
   // ══════════════════════════════════════
-  // TOKENS
+  // TOKENS (v1.2 — better error logging)
   // ══════════════════════════════════════
   async function addToken(body, wordType, domain, telosId, extra) {
     if (!supabase) return null;
     try {
-      var td = {body:body,word_type:wordType||'S',domain:domain||godName.toLowerCase()+'_domain',source:godName.toLowerCase(),score:50,metadata:extra||{},created_at:new Date().toISOString()};
+      var td = {
+        body: body,
+        word_type: wordType || 'S',
+        domain: domain || godName.toLowerCase() + '_domain',
+        source: godName.toLowerCase(),
+        score: 50,
+        metadata: extra || {},
+        created_at: new Date().toISOString()
+      };
       if (telosId) td.telos_id = telosId;
+
       var result = await supabase.from('tokens').insert(td).select();
-      if (result.data && result.data.length > 0) { console.log('🪙 Token added:', body); return result.data[0]; }
+
+      if (result.error) {
+        console.warn('⚠ Token insert error:', result.error.message, result.error.details || '');
+        return null;
+      }
+      if (result.data && result.data.length > 0) {
+        console.log('🪙 Token added:', body);
+        return result.data[0];
+      }
       return null;
-    } catch(err) { console.warn('⚠ Add token failed:', err.message); return null; }
+    } catch(err) {
+      console.warn('⚠ Add token failed:', err.message);
+      return null;
+    }
   }
 
   // ══════════════════════════════════════
@@ -155,10 +172,17 @@ var OlympianBridge = (function() {
   async function addPair(tokenAId, tokenBId, tokenABody, tokenBBody, domainA, domainB, affinity, tension) {
     if (!supabase) return null;
     try {
-      var result = await supabase.from('pairs').insert({token_a_id:tokenAId,token_b_id:tokenBId,token_a_body:tokenABody,token_b_body:tokenBBody,affinity_score:affinity||0.5,tension_score:tension||0.3,domain_a:domainA||godName.toLowerCase(),domain_b:domainB||'unknown',state:'raw',consumed:false,created_at:new Date().toISOString()}).select();
-      if (result.data && result.data.length > 0) return result.data[0];
+      var result = await supabase.from('pairs').insert({
+        token_a_id:tokenAId, token_b_id:tokenBId,
+        token_a_body:tokenABody, token_b_body:tokenBBody,
+        affinity_score:affinity||0.5, tension_score:tension||0.3,
+        domain_a:domainA||godName.toLowerCase(), domain_b:domainB||'unknown',
+        state:'raw', consumed:false, created_at:new Date().toISOString()
+      }).select();
+      if (result.error) { console.warn('⚠ Pair insert error:', result.error.message); return null; }
+      if (result.data && result.data.length > 0) { console.log('🔗 Pair created:', tokenABody, '↔', tokenBBody); return result.data[0]; }
       return null;
-    } catch(err) { return null; }
+    } catch(err) { console.warn('⚠ Add pair failed:', err.message); return null; }
   }
 
   // ══════════════════════════════════════
@@ -167,10 +191,16 @@ var OlympianBridge = (function() {
   async function addImage(promptText, imageUrl, god, name, style, aspectRatio) {
     if (!supabase) return null;
     try {
-      var result = await supabase.from('images').insert({prompt_text:promptText,image_url:imageUrl,god:god||godName,name:name||(godName+'_generation'),type:'pollinations',style:style||'oracle',aspect_ratio:aspectRatio||'1:1',score:50,crowned:false,status:'raw',created_at:new Date().toISOString()}).select();
-      if (result.data && result.data.length > 0) return result.data[0];
+      var result = await supabase.from('images').insert({
+        prompt_text:promptText, image_url:imageUrl,
+        god:god||godName, name:name||(godName+'_generation'),
+        type:'pollinations', style:style||'oracle', aspect_ratio:aspectRatio||'1:1',
+        score:50, crowned:false, status:'raw', created_at:new Date().toISOString()
+      }).select();
+      if (result.error) { console.warn('⚠ Image insert error:', result.error.message); return null; }
+      if (result.data && result.data.length > 0) { console.log('🖼️ Image added:', name); return result.data[0]; }
       return null;
-    } catch(err) { return null; }
+    } catch(err) { console.warn('⚠ Add image failed:', err.message); return null; }
   }
 
   // ══════════════════════════════════════
@@ -180,10 +210,18 @@ var OlympianBridge = (function() {
     if (!supabase) return null;
     try {
       var body = subject+' '+verb+' '+object;
-      var result = await supabase.from('svo_triplets').insert({subject:subject,verb:verb,object:object,body:body,source:godName.toLowerCase(),source_origin:sourceOrigin||'bridge',fertility_score:fertilityScore||50,coherence_score:50,mythogenic_score:mythogenicScore||50,cultivation_score:50,domain:domain||godName.toLowerCase()+'_domain',state:'raw',metadata:{},created_at:new Date().toISOString()}).select();
-      if (result.data && result.data.length > 0) return result.data[0];
+      var result = await supabase.from('svo_triplets').insert({
+        subject:subject, verb:verb, object:object, body:body,
+        source:godName.toLowerCase(), source_origin:sourceOrigin||'bridge',
+        fertility_score:fertilityScore||50, coherence_score:50,
+        mythogenic_score:mythogenicScore||50, cultivation_score:50,
+        domain:domain||godName.toLowerCase()+'_domain', state:'raw',
+        metadata:{}, created_at:new Date().toISOString()
+      }).select();
+      if (result.error) { console.warn('⚠ Triplet insert error:', result.error.message); return null; }
+      if (result.data && result.data.length > 0) { console.log('📐 Triplet added:', body); return result.data[0]; }
       return null;
-    } catch(err) { return null; }
+    } catch(err) { console.warn('⚠ Add triplet failed:', err.message); return null; }
   }
 
   // ══════════════════════════════════════
@@ -214,18 +252,15 @@ var OlympianBridge = (function() {
     getGodName: function(){return godName;},
     getGodGlyph: function(){return godGlyph;},
 
-    // Database access (NEW v1.1)
     getGaiaClient: getGaiaClient,
     getKairosClient: getKairosClient,
     queryGaiaDB: queryGaiaDB,
     queryKairosDB: queryKairosDB,
 
-    // Telos
     getActiveTelos: getActiveTelos,
     getActiveTelosAsync: getActiveTelosAsync,
     refreshTelos: refreshTelos,
 
-    // Tasks
     getTasks: getTasks,
     getTasksAsync: getTasksAsync,
     getRelevantTasks: getRelevantTasks,
@@ -233,13 +268,11 @@ var OlympianBridge = (function() {
     completeTask: completeTask,
     refreshTasks: refreshTasks,
 
-    // Artifacts
     addToken: addToken,
     addPair: addPair,
     addImage: addImage,
     addTriplet: addTriplet,
 
-    // Utility
     generateTelosPrompt: generateTelosPrompt,
     getDomainKeywords: function(){return domainKeywords[godName]||[];},
     getStatus: getStatus,
@@ -247,4 +280,4 @@ var OlympianBridge = (function() {
   };
 })();
 
-console.log('🔗 Olympian Bridge v1.1 loaded — with queryGaiaDB + queryKairosDB');
+console.log('🔗 Olympian Bridge v1.2 loaded — queryGaiaDB + queryKairosDB + error logging');
